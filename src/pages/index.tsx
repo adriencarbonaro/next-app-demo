@@ -2,10 +2,22 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
+import s from "@/styles/mine.module.css"
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+interface Props {
+  data: any;
+}
+
+export async function getServerSideProps() {
+  const res = await fetch("https://api.orosound.com/v0/version");
+  const data = await res.json();
+  return { props: { data: data } }
+}
+
+export default function Home(props: Props) {
   return (
     <>
       <Head>
@@ -16,6 +28,9 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
+          <Link className={s.myLink} href={"google.com"}>
+            {JSON.stringify(props.data)}
+          </Link>
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code>
